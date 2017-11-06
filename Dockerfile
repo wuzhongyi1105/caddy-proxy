@@ -1,4 +1,4 @@
-FROM nimmis/alpine:3.4
+FROM alpine:latest
 
 RUN apk update && apk upgrade && \
     apk add curl && \
