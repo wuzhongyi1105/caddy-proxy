@@ -1,5 +1,4 @@
 FROM nimmis/alpine:3.4
-MAINTAINER BlackGlory <woshenmedoubuzhidao@blackglory.me>
 
 RUN apk update && apk upgrade && \
     apk add curl && \
@@ -12,7 +11,7 @@ RUN mkdir -p /tmp/caddy \
  && chmod +x /usr/bin/caddy \
  && rm -rf /tmp/caddy
 
-ENV DOCKER_GEN_VERSION 0.4.3
+ENV DOCKER_GEN_VERSION 0.7.3
 ENV CADDY_OPTIONS ""
 
 RUN curl -sL -o docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz https://github.com/jwilder/docker-gen/releases/download/$DOCKER_GEN_VERSION/docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz \
@@ -22,5 +21,8 @@ RUN curl -sL -o docker-gen-linux-amd64-$DOCKER_GEN_VERSION.tar.gz https://github
 RUN printf ":80\nproxy / caddyserver.com" > /etc/Caddyfile
 
 ADD etc /etc
+
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 ENV DOCKER_HOST unix:///tmp/docker.sock
